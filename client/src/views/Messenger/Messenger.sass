@@ -1,0 +1,55 @@
+@import "../../assets/sass/variables"
+
+.messenger
+  height: 100vh
+  width: 100vw
+
+  .message-input-container
+    width: 100%
+    display: flex
+    justify-content: center
+    position: absolute
+    bottom: 0
+    padding-bottom: 20px
+    height: 80px
+    align-items: center
+
+    .message-input-items
+      display: flex
+      justify-content: space-between
+      width: 90%
+      height: 48px
+
+      .message-input
+        flex-grow: 1
+        margin-right: 5px
+        height: 100%
+
+        input
+          padding: 10px 15px
+          outline: none
+          border: 1px solid $color-border-grey
+          width: 100%
+          height: 100%
+          font-size: 16px
+          border-radius: $outer-radius 0 0 $outer-radius
+
+      .message-button
+        min-width: 80px
+        height: 100%
+
+        button
+          width: 100%
+          height: 100%
+          outline: none
+          border: none
+          border-radius: 0 $outer-radius $outer-radius 0
+          background-color: $color-primary
+          color: white
+          font-weight: bold
+          font-size: 16px
+          line-height: 0
+
+  .messenger-body
+    height: calc(100% - 80px)
+    padding: 50px 20px

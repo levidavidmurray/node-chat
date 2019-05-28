@@ -1,0 +1,23 @@
+@import "../../assets/sass/variables"
+$bRad: 20px
+$color-sent: #ecedf1
+
+.message
+  max-width: 55%
+  min-width: 120px
+  width: fit-content
+  padding: 10px 15px
+  border-radius: 5px $bRad $bRad $bRad
+  margin-bottom: 3px
+  font-family: 'Lato', sans-serif
+  color: #3a3a3a
+  background-color: $color-sent
+
+  &.sent
+    margin-right: 0
+    margin-left: auto
+    border-radius: $bRad 5px $bRad $bRad
+
+  &.received
+    background-color: $color-primary
+    color: white
