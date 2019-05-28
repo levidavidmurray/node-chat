@@ -7,8 +7,9 @@
 <script lang="ts">
 	import {Component, Prop, Vue} from "vue-property-decorator";
 	import {Message, SenderType} from "@/lib/types";
+	import TypingLoader from "./TypingLoader.vue";
 
-	@Component
+	@Component({ components: {TypingLoader} })
 	export default class ChatMessage extends Vue {
 		@Prop() private message!: Message;
 	}
