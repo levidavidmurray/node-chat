@@ -1,10 +1,12 @@
-import {Server, Socket} from "socket.io";
+import socketIO, {Server, Socket} from "socket.io";
+import { Server as HttpServer } from "http";
 
 class Director {
 	server: Server;
 
-	constructor(server: Server)
+	constructor(httpServer: HttpServer)
 	{
+		const server: Server = socketIO(httpServer, { path: "/chat" });
 		this.server = server;
 
 		server.on("connection", (socket: Socket) => {

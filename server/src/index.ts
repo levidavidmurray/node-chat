@@ -1,24 +1,49 @@
-// Server initialization
 import cors from "cors";
-import express, { Request, Response } from "express";
-import * as path from "path";
-import { Server } from "socket.io";
+import mongoose from "mongoose";
+import express, { Express } from "express";
+import bodyParser from "body-parser";
+import { Server as HttpServer } from "http";
 
 import Director from "./Director";
 
-const app = express();
-app.use(cors);
+const isProduction = process.env.NODE_ENV === "production";
 
-const http = require("http").Server(app);
+// Initialize express & middleware
+const app: Express = express();
 
-// Bind socket.io to our http server
-const io: Server = require("socket.io")(http, { path: "/chat" });
-const socketDirector: Director = new Director(io);
+app.use(cors());
 
-app.get("/", (req: Request, res: Response) => {
-	res.sendFile(path.resolve(__dirname, "../../client/index.html"));
+// Express config
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+
+mongoose.connect("mongodb://localhost/chatdb");
+mongoose.set("debug", true);
+//
+import "./models/User";
+import "./config/passport";
+import routes from "./routes";
+
+app.use(routes);
+
+app.use((req, res, next) =>
+{
+	const err = new Error("Not Found");
+	// @ts-ignore
+	err.status = 404;
+	next(err);
 });
 
-http.listen(3000, () => {
+// app.get("/", (req: Request, res: Response) => {
+// 	res.sendFile(path.resolve(__dirname, "../../client/index.html"));
+// });
+
+// Initialize Http server & socket connection
+const http: HttpServer = new HttpServer(app);
+// new Director(http);
+
+// Start server
+http.listen(3000, () =>
+{
 	console.log("Listening on *:3000");
 });

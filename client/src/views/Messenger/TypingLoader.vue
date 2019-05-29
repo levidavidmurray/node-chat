@@ -8,8 +8,8 @@
 
 <script>
 	export default {
-		name: "TypingLoader"
-	}
+		name: "TypingLoader",
+	};
 </script>
 
 <style scoped lang="scss">

@@ -68,7 +68,7 @@
 				this.typingTimeout = setTimeout(() => {
 					this.isTyping = false;
 					this.typingTimeout = null;
-				}, 600)
+				}, 600);
 			});
 		}
 
