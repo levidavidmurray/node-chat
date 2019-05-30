@@ -1,4 +1,3 @@
-import mongoose from "mongoose";
 import passport from "passport";
 import { Router } from "express";
 import { User, UserModel } from "../../models/User";
@@ -8,31 +7,54 @@ const router = Router();
 
 /**
  * @GET -- /user
+ * @auth: True
  * @description: Retrieves a single user by id
  */
-router.get("/user/:id", (req: any, res: any, next) => {
+router.get("/user/:id", auth.required, (req: any, res: any, next) => {
 	UserModel.findById(req.params.id)
 		.then((user: User) => {
 			if (!user) { return res.sendStatus(401); }
 
 			return res.json({ user: user.toAuthJSON() });
 		})
-		.catch((err) => {
-			console.log(err);
-		});
+		.catch(next);
 });
 
 /**
  * @PUT -- /user
+ * @auth: True
  */
-router.put("/user", auth.required, (req: any, res: any, next) => {
-	UserModel.findById(req.payload.id).then((user: User) => {
+router.put("/user/:id", auth.required, (req: any, res: any, next) => {
+	UserModel.findById(req.params.id).then((user: User) => {
 		if (!user) { return res.sendStatus(401); }
+
+		if (typeof req.body.user.username !== "undefined")
+		{
+			user.username = req.body.user.username;
+		}
+
+		if (typeof req.body.user.email !== "undefined")
+		{
+			user.email = req.body.user.email;
+		}
+
+		if (typeof req.body.user.password !== "undefined")
+		{
+			user.setPassword(req.body.user.password);
+		}
+
+		return UserModel(user).save()
+			.then(() => {
+				return res.json({user: user.toAuthJSON()});
+			}).catch(next);
 	});
 });
 
 /**
  * @POST -- /users/login
+ * @email: String
+ * @password: String
+ * @auth: False
  * @description: Log a user in, and return User JWT
  */
 router.post("/users/login", (req: any, res: any, next) => {
@@ -61,6 +83,7 @@ router.post("/users/login", (req: any, res: any, next) => {
 
 /**
  * @POST -- /users
+ * @auth: False
  * @description: Create a new User
  */
 router.post("/users", (req, res, next) => {

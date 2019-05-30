@@ -52,6 +52,7 @@ export class User extends Typegoose {
 	toAuthJSON(this: InstanceType<User>): UserAuthJSON
 	{
 		return {
+			id: this.id,
 			username: this.username,
 			email: this.email,
 			token: this.token
